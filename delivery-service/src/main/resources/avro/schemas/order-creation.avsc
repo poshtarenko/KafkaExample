@@ -1,0 +1,61 @@
+{
+  "type": "record",
+  "name": "OrderCreationEvent",
+  "namespace": "com.example.common.messaging.models",
+  "imports": [
+    "order-status.avsc"
+  ],
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "product",
+      "type": "string"
+    },
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "price",
+      "type": "string"
+    },
+    {
+      "name": "customerName",
+      "type": "string"
+    },
+    {
+      "name": "deliveryDestination",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": {
+        "name": "OrderStatus",
+        "type": "enum",
+        "symbols": [
+          "CREATED",
+          "PREPARATION",
+          "ON_THE_WAY",
+          "DELIVERED"
+        ]
+      }
+    },
+    {
+      "name": "isCompleted",
+      "type": "boolean"
+    },
+    {
+      "name": "completedAt",
+      "type": [
+        "null",
+        {
+          "type": "long",
+          "logicalType": "local-timestamp-millis"
+        }
+      ]
+    }
+  ]
+}

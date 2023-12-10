@@ -1,28 +1,30 @@
 package com.example.ordersservice.controller;
 
-import com.example.ordersservice.dto.Order;
-import com.example.ordersservice.producer.OrderEventProducer;
+import com.example.ordersservice.domain.Order;
+import com.example.ordersservice.dto.ChangeOrderDestinationDto;
+import com.example.ordersservice.dto.CreateOrderDto;
 import com.example.ordersservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
+@RequestMapping("/orders")
 public class OrderController {
 
-    private final OrderService orderService;
-    private final OrderEventProducer orderEventProducer;
+    private static final String ORDER_CREATE_URL = "/create";
+    private static final String ORDER_CHANGE_DESTINATION_URL = "/change-destination";
 
-    @PostMapping("/orders/create")
-    private Order create() {
-        Order order = orderService.create();
-        log.info("Sending order : " + order);
-        orderEventProducer.sendOrderCreationEvent("order", order);
-        return order;
+    private final OrderService orderService;
+
+    @PostMapping(ORDER_CREATE_URL)
+    private Order create(@RequestBody CreateOrderDto request) {
+        return orderService.create(request);
+    }
+
+    @PatchMapping(ORDER_CHANGE_DESTINATION_URL)
+    private Order changeDestination(@RequestBody ChangeOrderDestinationDto request) {
+        return orderService.changeDestination(request);
     }
 
 }

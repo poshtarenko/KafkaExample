@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "ChangeOrderDestinationEvent",
+  "namespace": "com.example.common.messaging.models",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "deliveryDestination",
+      "type": "string"
+    }
+  ]
+}
