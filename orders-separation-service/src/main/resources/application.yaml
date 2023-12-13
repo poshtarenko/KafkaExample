@@ -1,42 +1,16 @@
 server:
-  port: 8090
+  port: 8091
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/delivery-service-db
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: validate
-  liquibase:
-    enabled: false
   kafka:
     bootstrap-servers: 'localhost:9092,localhost:9093,localhost:9094'
-    producer:
-      keySerializer: "org.apache.kafka.common.serialization.StringSerializer"
-      valueSerializer: "io.confluent.kafka.serializers.KafkaAvroSerializer"
-      properties:
-        schema:
-          registry:
-            url: 'http://localhost:8081'
-    listener:
-      ack-mode: manual-immediate
-    consumer:
-      group-id: "DELIVERY_SERVICE_GROUP"
-      enable-auto-commit: false
-      keyDeserializer: "org.apache.kafka.common.serialization.StringDeserializer"
-      valueDeserializer: "io.confluent.kafka.serializers.KafkaAvroDeserializer"
-      autoOffsetReset: "earliest"
-      properties:
-        schema:
-          registry:
-            url: "http://localhost:8081"
-        specific:
-          avro:
-            reader: "true"
+    streams:
+      application-id: "orders-separation-service"
+    properties:
+      schema:
+        registry:
+          url: "http://localhost:8081"
 
 topic-names:
   order-creation: order-creation
-  change-order-destination: change-order-destination
-  update-order-status: update-order-status
+  cheap-order-creation: cheap-order-creation
+  expensive-order-creation: expensive-order-creation

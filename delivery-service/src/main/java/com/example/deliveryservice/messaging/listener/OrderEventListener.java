@@ -16,9 +16,16 @@ public class OrderEventListener {
 
     private final DeliveryService deliveryService;
 
-    @KafkaListener(topics = "${topic-names.order-creation}", groupId = "${spring.kafka.consumer.group-id}")
-    void onOrderCreationEvent(OrderCreationEvent event, Acknowledgment acknowledgment) {
-        log.info("Got order creation event : " + event);
+    @KafkaListener(topics = "${topic-names.cheap-order-creation}", groupId = "${spring.kafka.consumer.group-id}")
+    void onCheapOrderCreationEvent(OrderCreationEvent event, Acknowledgment acknowledgment) {
+        log.info("Got cheap order creation event : " + event);
+        deliveryService.startDelivery(event);
+        acknowledgment.acknowledge();
+    }
+
+    @KafkaListener(topics = "${topic-names.expensive-order-creation}", groupId = "${spring.kafka.consumer.group-id}")
+    void onExpensiveOrderCreationEvent(OrderCreationEvent event, Acknowledgment acknowledgment) {
+        log.info("Got expensive order creation event : " + event);
         deliveryService.startDelivery(event);
         acknowledgment.acknowledge();
     }

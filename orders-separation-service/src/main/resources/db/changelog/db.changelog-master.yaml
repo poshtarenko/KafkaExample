@@ -1,3 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: db/changelog/script/V1_0__DDL_DB.sql

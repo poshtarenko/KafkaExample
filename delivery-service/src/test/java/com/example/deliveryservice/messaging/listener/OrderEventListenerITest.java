@@ -91,7 +91,7 @@ class OrderEventListenerITest {
         latch.await(2, TimeUnit.SECONDS);
 
         ArgumentCaptor<OrderCreationEvent> captor = ArgumentCaptor.forClass(OrderCreationEvent.class);
-        verify(orderEventListener, times(1)).onOrderCreationEvent(captor.capture(), any());
+        verify(orderEventListener, times(1)).onExpensiveOrderCreationEvent(captor.capture(), any());
         assertOrderEvent(event, captor.getValue());
     }
 
@@ -108,7 +108,7 @@ class OrderEventListenerITest {
         latch.await(2, TimeUnit.SECONDS);
 
         ArgumentCaptor<OrderCreationEvent> captor = ArgumentCaptor.forClass(OrderCreationEvent.class);
-        verify(orderEventListener, times(1)).onOrderCreationEvent(captor.capture(), any());
+        verify(orderEventListener, times(1)).onExpensiveOrderCreationEvent(captor.capture(), any());
         assertOrderEvent(event, captor.getValue());
     }
 
@@ -126,7 +126,7 @@ class OrderEventListenerITest {
         latch.await(4, TimeUnit.SECONDS);
 
         ArgumentCaptor<OrderCreationEvent> captor = ArgumentCaptor.forClass(OrderCreationEvent.class);
-        verify(orderEventListener, times(3)).onOrderCreationEvent(captor.capture(), any());
+        verify(orderEventListener, times(3)).onExpensiveOrderCreationEvent(captor.capture(), any());
         verify(deliveryService, times(3)).startDelivery(any());
         assertOrderEvent(event, captor.getValue());
 

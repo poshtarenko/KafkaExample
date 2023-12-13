@@ -37,6 +37,7 @@ spring:
             reader: "true"
 
 topic-names:
-  order-creation: order-creation
+  cheap-order-creation: cheap-order-creation
+  expensive-order-creation: expensive-order-creation
   change-order-destination: change-order-destination
   update-order-status: update-order-status
