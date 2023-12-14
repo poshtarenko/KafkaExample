@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-orders-config
+data:
+  postgres_user: postgres
+  postgres_password: postgres
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-orders-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-orders
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-orders
+  template:
+    metadata:
+      labels:
+        app: postgres-orders
+    spec:
+      volumes:
+        - name: postgres-orders-storage
+          persistentVolumeClaim:
+            claimName: postgres-orders-pv-claim
+      containers:
+        - image: postgres:15.2
+          name: postgres-orders
+          env:
+            - name: POSTGRES_DB
+              value: orders-service-db
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-orders-config
+                  key: postgres_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-orders-config
+                  key: postgres_password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+              name: postgres-orders
+          volumeMounts:
+            - name: postgres-orders-storage
+              mountPath: /var/lib/postgresql/data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-orders
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+  selector:
+    app: postgres-orders

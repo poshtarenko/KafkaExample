@@ -25,6 +25,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderEventProducer orderEventProducer;
 
+    @Transactional(readOnly = true)
+    public Order get(Long id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order with id " + id + " not exists"));
+    }
+
     @Transactional
     public Order create(CreateOrderDto request) {
         Order order = Order.builder()
@@ -69,6 +75,7 @@ public class OrderService {
         };
         order.setStatus(status);
         if (DELIVERED.equals(status)) {
+            order.setIsCompleted(true);
             order.setCompletedAt(LocalDateTime.now());
         }
         orderRepository.save(order);

@@ -17,16 +17,16 @@ public class KafkaTopicsConfig {
     @Bean
     public NewTopic cheapOrderCreationTopic() {
         return TopicBuilder.name(cheapOrderCreationTopic)
-                .partitions(3)
-                .replicas(3)
+                .partitions(1)
+                .replicas(1)
                 .build();
     }
 
     @Bean
     public NewTopic expensiveOrderCreationTopic() {
         return TopicBuilder.name(expensiveOrderCreationTopic)
-                .partitions(3)
-                .replicas(3)
+                .partitions(1)
+                .replicas(1)
                 .build();
     }
 

@@ -2,13 +2,13 @@ server:
   port: 8091
 spring:
   kafka:
-    bootstrap-servers: 'localhost:9092,localhost:9093,localhost:9094'
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     streams:
       application-id: "orders-separation-service"
     properties:
       schema:
         registry:
-          url: "http://localhost:8081"
+          url: ${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8081}
 
 topic-names:
   order-creation: order-creation

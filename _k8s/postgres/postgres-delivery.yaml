@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-delivery-config
+data:
+  postgres_user: postgres
+  postgres_password: postgres
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-delivery-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-delivery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-delivery
+  template:
+    metadata:
+      labels:
+        app: postgres-delivery
+    spec:
+      volumes:
+        - name: postgres-delivery-storage
+          persistentVolumeClaim:
+            claimName: postgres-delivery-pv-claim
+      containers:
+        - image: postgres:15.2
+          name: postgres-delivery
+          env:
+            - name: POSTGRES_DB
+              value: delivery-service-db
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-delivery-config
+                  key: postgres_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-delivery-config
+                  key: postgres_password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgres-delivery-storage
+              mountPath: /var/lib/postgresql/data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-delivery
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+  selector:
+    app: postgres-delivery

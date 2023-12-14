@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-service
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders-service
+  template:
+    metadata:
+      name: orders-service
+      labels:
+        app: orders-service
+    spec:
+      containers:
+        - name: orders-service
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-orders-config
+                  key: postgres_user
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-orders-config
+                  key: postgres_password
+            - name: DB_URL
+              value: jdbc:postgresql://postgres-orders:5432/orders-service-db
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: kafka-service:9092
+            - name: KAFKA_SCHEMA_REGISTRY_URL
+              value: http://schema-registry:8081
+          image: poshtarenko-orders-service
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-service-svc
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: orders-service
+  type: ClusterIP

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>orders-separation-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>orders-separation-service</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: delivery-service
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: delivery-service
+  template:
+    metadata:
+      name: delivery-service
+      labels:
+        app: delivery-service
+    spec:
+      containers:
+        - name: delivery-service
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-delivery-config
+                  key: postgres_user
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-delivery-config
+                  key: postgres_password
+            - name: DB_URL
+              value: jdbc:postgresql://postgres-delivery:5432/delivery-service-db
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: kafka-service:9092
+            - name: KAFKA_SCHEMA_REGISTRY_URL
+              value: http://schema-registry:8081
+          image: poshtarenko-delivery-service
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: delivery-service-svc
+spec:
+  ports:
+    - port: 8090
+      targetPort: 8090
+  selector:
+    app: delivery-service
+  type: ClusterIP

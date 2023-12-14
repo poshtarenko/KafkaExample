@@ -12,10 +12,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/orders")
 public class OrderController {
 
+    private static final String ORDER_GET_URL = "/get";
     private static final String ORDER_CREATE_URL = "/create";
     private static final String ORDER_CHANGE_DESTINATION_URL = "/change-destination";
 
     private final OrderService orderService;
+
+    @GetMapping(ORDER_GET_URL)
+    private Order get(@RequestBody Long id) {
+        return orderService.get(id);
+    }
 
     @PostMapping(ORDER_CREATE_URL)
     private Order create(@RequestBody CreateOrderDto request) {
