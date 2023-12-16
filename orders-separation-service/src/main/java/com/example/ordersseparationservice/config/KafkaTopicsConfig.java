@@ -9,10 +9,20 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class KafkaTopicsConfig {
 
+    @Value("${topic-names.order-creation}")
+    private String orderCreationTopic;
     @Value(value = "${topic-names.cheap-order-creation}")
     private String cheapOrderCreationTopic;
     @Value(value = "${topic-names.expensive-order-creation}")
     private String expensiveOrderCreationTopic;
+
+    @Bean
+    public NewTopic orderCreationTopic() {
+        return TopicBuilder.name(orderCreationTopic)
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
 
     @Bean
     public NewTopic cheapOrderCreationTopic() {

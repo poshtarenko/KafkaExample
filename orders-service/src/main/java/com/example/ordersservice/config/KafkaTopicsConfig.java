@@ -13,6 +13,8 @@ public class KafkaTopicsConfig {
     private String orderCreationTopic;
     @Value("${topic-names.change-order-destination}")
     private String changeOrderDestinationTopic;
+    @Value("${topic-names.update-order-status}")
+    private String updateOrderStatusTopic;
 
     @Bean
     public NewTopic orderCreationTopic() {
@@ -25,6 +27,14 @@ public class KafkaTopicsConfig {
     @Bean
     public NewTopic changeOrderDestinationTopic() {
         return TopicBuilder.name(changeOrderDestinationTopic)
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic updateOrderStatusTopic() {
+        return TopicBuilder.name(updateOrderStatusTopic)
                 .partitions(1)
                 .replicas(1)
                 .build();

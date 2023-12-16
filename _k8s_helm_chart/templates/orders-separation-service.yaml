@@ -28,7 +28,7 @@ spec:
               value: kafka-service:9092
             - name: KAFKA_SCHEMA_REGISTRY_URL
               value: http://schema-registry:8081
-          image: orders-separation-service
+          image: {{ .Values.images.ordersseparationservice }}
           imagePullPolicy: Never
 ---
 apiVersion: v1

@@ -16,6 +16,13 @@ spec:
     spec:
       containers:
         - name: orders-service
+          resources:
+            requests:
+              cpu: 300m
+              memory: 600Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
           env:
             - name: DB_USERNAME
               valueFrom:
@@ -33,7 +40,7 @@ spec:
               value: kafka-service:9092
             - name: KAFKA_SCHEMA_REGISTRY_URL
               value: http://schema-registry:8081
-          image: poshtarenko-orders-service
+          image: orders-service
           imagePullPolicy: Never
 ---
 apiVersion: v1

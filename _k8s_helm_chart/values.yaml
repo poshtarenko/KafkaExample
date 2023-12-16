@@ -1,0 +1,4 @@
+images:
+  ordersservice: orders-service
+  deliveryservice: delivery-service
+  ordersseparationservice: orders-separation-service

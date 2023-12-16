@@ -40,7 +40,7 @@ spec:
               value: kafka-service:9092
             - name: KAFKA_SCHEMA_REGISTRY_URL
               value: http://schema-registry:8081
-          image: delivery-service
+          image: {{ .Values.images.deliveryservice }}
           imagePullPolicy: Never
 ---
 apiVersion: v1
