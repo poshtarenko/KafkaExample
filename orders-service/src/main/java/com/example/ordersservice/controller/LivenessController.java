@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LivenessController {
 
     @GetMapping("/")
-    private ResponseEntity<?> isServiceReady() {
+    public ResponseEntity<?> isServiceReady() {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

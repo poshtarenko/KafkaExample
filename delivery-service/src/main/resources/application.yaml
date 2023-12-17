@@ -41,3 +41,8 @@ topic-names:
   expensive-order-creation: expensive-order-creation
   change-order-destination: change-order-destination
   update-order-status: update-order-status
+
+topic-consumer-groups:
+  cheap-order-creation: DELIVERY_SERVICE_GROUP_1
+  expensive-order-creation: DELIVERY_SERVICE_GROUP_2
+  change-order-destination: DELIVERY_SERVICE_GROUP_3

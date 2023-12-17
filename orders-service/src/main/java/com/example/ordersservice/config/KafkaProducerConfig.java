@@ -15,39 +15,39 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    @Bean
-    public ProducerFactory<String, OrderCreationEvent> orderCreationEventProducerFactory(KafkaProperties kafkaProperties) {
-        //noinspection removal
-        Map<String, Object> configs = kafkaProperties.buildProducerProperties();
-        configs.put(ProducerConfig.ACKS_CONFIG, "all");
-        configs.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
-        configs.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "order-service-transactional-id-1");
-        return new DefaultKafkaProducerFactory<>(configs);
-    }
-
-    @Bean
-    public ProducerFactory<String, ChangeOrderDestinationEvent> changeOrderDestinationEventProducerFactory(KafkaProperties kafkaProperties) {
-        //noinspection removal
-        Map<String, Object> configs = kafkaProperties.buildProducerProperties();
-        configs.put(ProducerConfig.ACKS_CONFIG, "all");
-        configs.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
-        configs.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "order-service-transactional-id-2");
-        return new DefaultKafkaProducerFactory<>(configs);
-    }
-
-
-    @Bean
-    public KafkaTemplate<String, OrderCreationEvent> kafkaOrderEventTemplate(
-            ProducerFactory<String, OrderCreationEvent> producerFactory
-    ) {
-        return new KafkaTemplate<>(producerFactory);
-    }
-
-    @Bean
-    public KafkaTemplate<String, ChangeOrderDestinationEvent> kafkaChangeOrderDestinationTemplate(
-            ProducerFactory<String, ChangeOrderDestinationEvent> producerFactory
-    ) {
-        return new KafkaTemplate<>(producerFactory);
-    }
+//    @Bean
+//    public ProducerFactory<String, OrderCreationEvent> orderCreationEventProducerFactory(KafkaProperties kafkaProperties) {
+//        //noinspection removal
+//        Map<String, Object> configs = kafkaProperties.buildProducerProperties();
+//        configs.put(ProducerConfig.ACKS_CONFIG, "all");
+//        configs.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+//        configs.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "order-service-transactional-id-1");
+//        return new DefaultKafkaProducerFactory<>(configs);
+//    }
+//
+//    @Bean
+//    public ProducerFactory<String, ChangeOrderDestinationEvent> changeOrderDestinationEventProducerFactory(KafkaProperties kafkaProperties) {
+//        //noinspection removal
+//        Map<String, Object> configs = kafkaProperties.buildProducerProperties();
+//        configs.put(ProducerConfig.ACKS_CONFIG, "all");
+//        configs.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+//        configs.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "order-service-transactional-id-2");
+//        return new DefaultKafkaProducerFactory<>(configs);
+//    }
+//
+//
+//    @Bean
+//    public KafkaTemplate<String, OrderCreationEvent> kafkaOrderEventTemplate(
+//            ProducerFactory<String, OrderCreationEvent> producerFactory
+//    ) {
+//        return new KafkaTemplate<>(producerFactory);
+//    }
+//
+//    @Bean
+//    public KafkaTemplate<String, ChangeOrderDestinationEvent> kafkaChangeOrderDestinationTemplate(
+//            ProducerFactory<String, ChangeOrderDestinationEvent> producerFactory
+//    ) {
+//        return new KafkaTemplate<>(producerFactory);
+//    }
 
 }
